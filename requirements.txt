@@ -1,0 +1,12 @@
+streamlit
+pandas
+langchain
+faiss-cpu
+python-dotenv
+langchain-google-genai
+requests
+beautifulsoup4
+tiktoken
+langchain-text-splitters
+google-generativeai
+sentence-transformers
