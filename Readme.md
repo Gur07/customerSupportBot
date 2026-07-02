@@ -41,41 +41,6 @@ The project has two main goals:
 
 ---
 
-## ⚙️ System Architecture  
-
-Below is a high-level flow of how the system operates:
-
-                    ┌────────────────────┐
-                    │ Sample Tickets CSV │
-                    └─────────┬──────────┘
-                              │
-                              ▼
-                     ┌─────────────────┐
-                     │ Classification  │
-                     │  Pipeline       │
-                     ├─────────────────┤
-                     │ Topic Tagging   │
-                     │ Sentiment       │
-                     │ Priority Scoring│
-                     └─────────┬────────┘
-                               │
-        ┌──────────────────────┼────────────────────────┐
-        ▼                      ▼                        ▼
- ┌──────────────┐      ┌────────────────┐       ┌─────────────────┐
- │ Bulk Ticket  │      │ Interactive AI │       │ RAG Knowledge   │
- │ Dashboard    │      │  Chat Input    │       │  Retrieval      │
- └──────┬───────┘      └──────┬────────┘       └─────────────────┘
-        │                     │
-        ▼                     ▼
-  ┌──────────────────────────────────────┐
-  │    Front-End Views                   │
-  │  • Internal Analysis (Topic, etc.)   │
-  │  • Final Response (Generated Text)   │
-  └──────────────────────────────────────┘
-
-
----
-
 ## 🧩 AI Pipeline Design  
 
 ### 1. **Ticket Classification**
@@ -83,8 +48,8 @@ Below is a high-level flow of how the system operates:
 
 #### Steps:
 - **Embedding-based classification:**  
-  Use sentence embeddings (e.g., `all-MiniLM-L6-v2`) for semantic understanding.  
-- **Fine-tuned zero-shot model or LLM prompt-based classification** for:
+  Use sentence embeddings for semantic understanding.  
+- **LLM prompt-based classification** for:
   - **Topic detection**
   - **Sentiment classification**
   - **Priority estimation** based on urgency words or tone  
@@ -114,7 +79,7 @@ If the ticket is outside supported topics (e.g., Connector, Lineage, Sensitive D
 
 The application can be built using:
 - **Streamlit** (recommended for simplicity and interactivity)
-- Or **Flask + React** (for scalability and UI flexibility)
+
 
 ### Components:
 - **Sidebar:** Upload or view ticket dataset  
@@ -127,31 +92,11 @@ The application can be built using:
 
 | Task | Suggested Tool / Model | Reason |
 |------|------------------------|--------|
-| Topic, Sentiment, Priority Classification | OpenAI / Gemini / HuggingFace zero-shot models | Fast prototyping, no custom training |
-| Text Embeddings | `sentence-transformers/all-MiniLM-L6-v2` | Lightweight & high accuracy |
-| Vector Database | FAISS or Chroma | Efficient similarity search for RAG |
-| LLM for RAG | Gemini API / GPT / Llama 3 | Contextual and citation-friendly |
+| Topic, Sentiment, Priority Classification | Gemini  | Fast prototyping, no custom training |
+| Text Embeddings | `sentence-transformers` | Lightweight & high accuracy |
+| Vector Database | FAISS | Efficient similarity search for RAG |
+| LLM for RAG | Gemini API | Contextual and citation-friendly |
 | Frontend Framework | Streamlit | Quick deployment and demo |
-| Backend | Python (FastAPI / Flask) | API flexibility and modular design |
+| Backend | Python  | API flexibility and modular design |
 
 ---
-
-## 🧱 Folder Structure  
-
-customer-support-copilot/
-│
-├── app.py                 # Main Streamlit or Flask app
-├── backend/
-│   ├── classifier.py      # Topic, sentiment, priority classification logic
-│   ├── rag_engine.py      # RAG pipeline implementation
-│   ├── utils.py           # Helper functions
-│
-├── data/
-│   └── sample_tickets.csv # Sample ticket dataset
-│
-├── docs/
-│   ├── architecture.png   # System diagram
-│
-├── requirements.txt       # Dependencies
-├── README.md              # Documentation
-└── config.yaml            # Model/API configurations
